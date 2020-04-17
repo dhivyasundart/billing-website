@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+ <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+	<title>Cart info</title>
+</head>
+
+<body>
+	<div class="container">
+	<h3>Cart Info</h3>
+	<hr>
+        <a th:href="@{/products/list}" class="btn btn-dark">Go to Main page</a>
+    <br> 
+    <hr>            
+	Note: You can modify quantity of each product and press update at the end.
+	      Total and subtotal will be changed only after pressing update(blue button).
+	<hr>
+	<form method="post" th:action="${'/cart/update/'}">
+	<table class="table table-bordered table-striped">
+	<thead class="thead-dark">
+		<tr>
+				<th>Code</th>
+				<th>Name</th>
+				<th>Cost</th>
+				<th>GST(in %)</th>
+				<th>
+				Quantity
+				<input type="submit" value="Update" style="background-color:blue"/>
+				</th>
+				<th>Sub total</th>
+				<th>Cancel Item</th>
+			</tr>
+		</thead>
+		
+		<tbody id="myTable">
+			<tr th:each="item : ${session.cart}">
+			  
+				<td th:text="${item.product.code}" />	
+				<td th:text="${item.product.name}" />	
+				<td th:text="${item.product.price}" />	
+				<td th:text="${item.product.gst}" />
+				<td>
+				     <input type="number" th:value="${item.quantity}" name="quantity" min="1" style="width:50px;"/>
+				 </td>
+				<td th:text="${(item.product.gst+100)*item.product.price * item.quantity/100}"></td>
+				<td align="center">
+				<a th:href="${'/cart/remove/'+item.product.code}" class="btn btn-danger btn-sm">X</a>
+				</td>
+				
+			</tr>
+		</tbody>
+	
+	<tr style="outline: thin solid">
+		<td colspan="5" align="center" >Total</td>
+		<td th:text="${total}" ></td>
+	</tr>	
+	
+	</table>
+	
+	</form>
+	
+	</div>
+</body>
+</html>
+
+
+
